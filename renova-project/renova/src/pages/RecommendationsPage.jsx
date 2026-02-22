@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import BackBtn from "../components/BackBtn";
 import { CircProg } from "../components/Charts";
 
-const API = process.env.REACT_APP_API_URL || "https://renova-119i.vercel.app/api";
+const API = process.env.REACT_APP_API_URL || "https://renova-119i-git-main-krishnapriyas-projects-537df4fe.vercel.app/api";
 
 export default function RecommendationsPage({ navigate, logout, goBack }) {
   const { token } = useAuth();

@@ -196,9 +196,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ─── Start Server ───────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`
+// ─── Initialize Gemini AI ────────────────────────────────────────────────────
+const geminiReady = initGemini();
+
+// ─── Start Server (only when not on Vercel) ─────────────────────────────────
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`
   ╔══════════════════════════════════════════════════╗
   ║                                                  ║
   ║   🚀  Renova API Server                          ║
@@ -209,15 +213,14 @@ app.listen(PORT, () => {
   ║   Health:      http://localhost:${PORT}/api/health   ║
   ║                                                  ║
   ╚══════════════════════════════════════════════════╝
-  `);
+    `);
 
-  // Initialize Gemini AI
-  const geminiReady = initGemini();
-  if (geminiReady) {
-    console.log("  ✓ Google Gemini AI initialized\n");
-  } else {
-    console.log("  ⚠ Gemini AI not configured (set GEMINI_API_KEY in .env)\n");
-  }
-});
+    if (geminiReady) {
+      console.log("  ✓ Google Gemini AI initialized\n");
+    } else {
+      console.log("  ⚠ Gemini AI not configured (set GEMINI_API_KEY in .env)\n");
+    }
+  });
+}
 
 module.exports = app;
