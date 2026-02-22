@@ -98,6 +98,15 @@ app.use("/api/roadmap", roadmapRoutes);
 app.use("/api/community", communityRoutes);
 app.use("/api/ai", geminiRoutes);
 
+// ─── Root Route ─────────────────────────────────────────────────────────────
+app.get("/", (req, res) => {
+  res.json({
+    status: "ok",
+    service: "Renova API",
+    message: "Welcome to Renova API. Visit /api for documentation.",
+  });
+});
+
 // ─── Health Check ───────────────────────────────────────────────────────────
 app.get("/api/health", (req, res) => {
   res.json({
