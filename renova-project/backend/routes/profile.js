@@ -21,7 +21,6 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
 const supabase = require("../config/supabase");
 const { authenticate } = require("../middleware/auth");
 const { analyzeResume } = require("../services/geminiService");
@@ -29,31 +28,36 @@ const { analyzeResume } = require("../services/geminiService");
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } }); // 10 MB limit
 
-// Helper: save file to local uploads directory, return public URL
-function saveFileLocally(subDir, userId, file) {
+// Helper: upload file to Supabase Storage, return public URL
+async function uploadToSupabase(bucket, subDir, userId, file) {
   const ext = path.extname(file.originalname) || ".bin";
-  const fileName = `${userId}-${Date.now()}${ext}`;
-  const dir = path.join(__dirname, "..", "uploads", subDir);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  const filePath = path.join(dir, fileName);
-  fs.writeFileSync(filePath, file.buffer);
-  // Return URL path served by express.static
-  const baseUrl = process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
-  return `${baseUrl}/uploads/${subDir}/${fileName}`;
+  const fileName = `${subDir}/${userId}-${Date.now()}${ext}`;
+
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .upload(fileName, file.buffer, {
+      contentType: file.mimetype,
+      upsert: true,
+    });
+
+  if (error) throw new Error(`Supabase upload failed: ${error.message}`);
+
+  const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(fileName);
+  return urlData.publicUrl;
 }
 
-// Helper: read/write banner URL from a local JSON file (avoids needing DB column)
-const BANNER_DATA_DIR = path.join(__dirname, "..", "uploads", "banners");
-function getBannerData(userId) {
+// Helper: get banner URL from profiles table
+async function getBannerData(userId) {
   try {
-    const fp = path.join(BANNER_DATA_DIR, `${userId}.json`);
-    if (fs.existsSync(fp)) return JSON.parse(fs.readFileSync(fp, "utf-8"));
-  } catch {}
-  return null;
-}
-function saveBannerData(userId, data) {
-  if (!fs.existsSync(BANNER_DATA_DIR)) fs.mkdirSync(BANNER_DATA_DIR, { recursive: true });
-  fs.writeFileSync(path.join(BANNER_DATA_DIR, `${userId}.json`), JSON.stringify(data));
+    const { data } = await supabase
+      .from("profiles")
+      .select("banner_url")
+      .eq("user_id", userId)
+      .single();
+    return data?.banner_url ? { banner_url: data.banner_url } : null;
+  } catch {
+    return null;
+  }
 }
 
 // ─── GET FULL PROFILE ───────────────────────────────────────────────────────
@@ -93,8 +97,8 @@ router.get("/", authenticate, async (req, res) => {
     // Get user name + avatar
     const { data: user } = await supabase.from("users").select("name, email, avatar_url").eq("id", userId).single();
 
-    // Get banner data from local file
-    const bannerData = getBannerData(userId);
+    // Get banner data from profiles table
+    const bannerData = await getBannerData(userId);
 
     res.json({
       profile: {
@@ -272,7 +276,7 @@ router.use("/languages", subSectionRoutes("languages", ["name", "level", "sort_o
 router.post("/resume", authenticate, upload.single("resume"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No file uploaded." });
-    const fileUrl = saveFileLocally("resumes", req.user.id, req.file);
+    const fileUrl = await uploadToSupabase("uploads", "resumes", req.user.id, req.file);
     await supabase.from("profiles").update({ resume_url: fileUrl }).eq("user_id", req.user.id);
     res.json({ message: "Resume uploaded.", resume_url: fileUrl });
   } catch (err) {
@@ -285,7 +289,7 @@ router.post("/resume", authenticate, upload.single("resume"), async (req, res) =
 router.post("/avatar", authenticate, upload.single("avatar"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No file uploaded." });
-    const avatarUrl = saveFileLocally("avatars", req.user.id, req.file);
+    const avatarUrl = await uploadToSupabase("uploads", "avatars", req.user.id, req.file);
     // Store in users table (which has avatar_url column)
     await supabase.from("users").update({ avatar_url: avatarUrl }).eq("id", req.user.id);
     res.json({ message: "Avatar uploaded.", avatar_url: avatarUrl });
@@ -299,11 +303,9 @@ router.post("/avatar", authenticate, upload.single("avatar"), async (req, res) =
 router.post("/banner", authenticate, upload.single("banner"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No file uploaded." });
-    const bannerUrl = saveFileLocally("banners", req.user.id, req.file);
-    // Store banner URL in local JSON file (profiles table doesn't have banner_url column)
-    saveBannerData(req.user.id, { banner_url: bannerUrl });
-    // Update banner_index to -1 to indicate custom image
-    await supabase.from("profiles").update({ banner_index: -1 }).eq("user_id", req.user.id);
+    const bannerUrl = await uploadToSupabase("uploads", "banners", req.user.id, req.file);
+    // Store banner URL in profiles table + set banner_index to -1 for custom image
+    await supabase.from("profiles").update({ banner_url: bannerUrl, banner_index: -1 }).eq("user_id", req.user.id);
     res.json({ message: "Banner uploaded.", banner_url: bannerUrl });
   } catch (err) {
     console.error("Banner upload error:", err);
@@ -317,7 +319,7 @@ router.post("/cv-analyze", authenticate, upload.single("cv"), async (req, res) =
     if (!req.file) return res.status(400).json({ error: "No CV file uploaded." });
 
     const userId = req.user.id;
-    const fileUrl = saveFileLocally("resumes", userId, req.file);
+    const fileUrl = await uploadToSupabase("uploads", "resumes", userId, req.file);
 
     // Update profile resume_url
     await supabase.from("profiles").update({ resume_url: fileUrl }).eq("user_id", userId);

@@ -1,419 +1,297 @@
 <p align="center">
-  <img src="./img.png" alt="Project Banner" width="100%">
+  <img src="./img.png" alt="Renova Banner" width="100%">
 </p>
 
-# [Renova] 🎯
+# Renova 🎯
+
+**AI-Powered Career Re-Entry Platform for Women**
 
 ## Basic Details
 
-### Team Name: [Jarvis]
+### Team Name: Jarvis
 
 ### Team Members
-- Member 1: [ganga gireesh] - [Toc H Institute of Science and Technology]
-- Member 2: [krishnapriya rajeev] - [Toc H Institute of Science and Technology]
+- Member 1: Ganga Gireesh - Toc H Institute of Science and Technology
+- Member 2: Krishnapriya Rajeev - Toc H Institute of Science and Technology
 
 ### Hosted Project Link
-[mention your project hosted link here]
+- **Frontend:** [https://renova-frontend.vercel.app](https://renova-frontend.vercel.app)
+- **Backend API:** [https://renova-119i.vercel.app/api](https://renova-119i.vercel.app/api)
 
 ### Project Description
-[Many women struggle to return to work after maternity breaks due to rapid industry changes, evolving skill requirements, and a loss of confidence. Renova is a career re-entry platform designed to support women during this transition. It assesses their experience, break duration, and professional background to provide a personalized evaluation and a clear, structured roadmap. By identifying skill gaps and offering targeted guidance, Renova helps women regain confidence and re-enter the workforce with clarity and direction.]
+Many women struggle to return to work after maternity breaks due to rapid industry changes, evolving skill requirements, and a loss of confidence. Renova is a career re-entry platform designed to support women during this transition. It assesses their experience, break duration, and professional background to provide a personalized evaluation and a clear, structured roadmap. By identifying skill gaps and offering targeted guidance, Renova helps women regain confidence and re-enter the workforce with clarity and direction.
 
-### The Problem statement
-[What problem are you solving?]
+### The Problem Statement
+Women returning to work after maternity or extended career breaks often face rapid industry changes that make their previous skills less relevant. Many struggle with reduced professional confidence and a lack of structured guidance to restart their careers. Flexible and returnship-friendly opportunities are difficult to find, and most existing platforms ignore career gaps, focusing only on job listings rather than true readiness and support.
 
 ### The Solution
-[How are you solving it?]
+Renova addresses this challenge by providing an AI-powered, structured career re-entry pathway tailored specifically for women returning after a break. It evaluates their previous experience, career gap duration, and current skill relevance to generate personalized role recommendations and a clear, step-by-step roadmap. By identifying skill gaps, offering guided upskilling plans, tracking confidence growth, and highlighting flexible opportunities, Renova transforms uncertainty into clarity — helping women rebuild confidence and re-enter the workforce with direction and purpose.
 
 ---
 
 ## Technical Details
 
-### Technologies/Components Used
+### Technologies Used
 
-**For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+**Languages:**
+- JavaScript (ES6+)
 
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+**Frontend:**
+- React 18 (Create React App)
+- Styled Components / CSS-in-JS
+- Context API for state management
+
+**Backend:**
+- Node.js with Express 4
+- JWT (JSON Web Tokens) for authentication
+- bcrypt.js for password hashing
+- Multer for file uploads (avatars, banners, resumes)
+- Express Rate Limiting for API security
+
+**Database:**
+- Supabase (PostgreSQL)
+
+**AI/ML:**
+- Google Gemini AI — personalized career chat, resume review, break explanation generation
+
+**Deployment:**
+- Vercel (frontend + backend serverless functions)
+
+**Tools:**
+- VS Code, Git, GitHub, Vercel CLI, Supabase Dashboard
 
 ---
 
 ## Features
 
-List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+- **Personalized Onboarding** — Collects career break duration, last role, industry, skills, confidence level, and career goals to build a tailored profile.
+- **AI-Powered Dashboard** — Displays career readiness score, confidence tracker, skill radar charts, and daily motivational reminders.
+- **Smart Recommendations** — Suggests relevant job roles, courses, and re-entry opportunities based on the user's profile and skill gaps.
+- **Career Roadmap** — Generates a step-by-step milestone roadmap with progress tracking to guide users back into the workforce.
+- **Rich Profile Builder** — Full profile with experience, education, certifications, achievements, volunteering, languages, resume upload, and custom avatars/banners.
+- **AI Career Chat** — Powered by Google Gemini — provides career advice, resume reviews, and personalized break explanations.
+- **Community Forum** — Users can share experiences, post anonymously, like and comment on posts for peer support.
+- **CV Analysis** — AI-powered resume review that identifies strengths, gaps, and improvement suggestions.
+- **Confidence Tracking** — Logs and visualizes confidence growth over time with interactive charts.
+- **Responsive Design** — Beautiful, mobile-friendly UI with elegant typography and gradient themes.
 
 ---
 
 ## Implementation
 
-### For Software:
+### Project Structure
 
-#### Installation
-```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+```
+renova-project/
+├── backend/                  # Express.js REST API
+│   ├── server.js             # Main server entry point
+│   ├── config/supabase.js    # Supabase client configuration
+│   ├── middleware/auth.js    # JWT authentication middleware
+│   ├── routes/               # API route handlers
+│   │   ├── auth.js           # Signup, login, logout, session
+│   │   ├── onboarding.js     # Onboarding flow
+│   │   ├── profile.js        # Profile CRUD + file uploads
+│   │   ├── dashboard.js      # Metrics, confidence, reminders
+│   │   ├── recommendations.js# Job/course recommendations
+│   │   ├── roadmap.js        # Career roadmap milestones
+│   │   ├── community.js      # Community posts, likes, comments
+│   │   └── gemini.js         # AI chat, resume review, break explanation
+│   ├── services/             # Business logic
+│   │   ├── geminiService.js  # Google Gemini AI integration
+│   │   ├── recommendationEngine.js
+│   │   └── roadmapEngine.js
+│   └── database/
+│       └── schema.sql        # Supabase PostgreSQL schema
+│
+└── renova/                   # React frontend (CRA)
+    ├── src/
+    │   ├── App.js            # Main app with page routing
+    │   ├── context/AuthContext.js  # Auth state management
+    │   ├── pages/            # All application pages
+    │   │   ├── LandingPage.jsx
+    │   │   ├── AuthPages.jsx
+    │   │   ├── OnboardingPage.jsx
+    │   │   ├── DashboardPage.jsx
+    │   │   ├── ProfilePage.jsx
+    │   │   ├── RecommendationsPage.jsx
+    │   │   ├── RoadmapPage.jsx
+    │   │   └── CommunityPage.jsx
+    │   ├── components/       # Reusable UI components
+    │   └── styles/           # Global styles & themed components
+    └── vercel.json           # Vercel deployment config
 ```
 
-#### Run
+### Installation
+
+**Prerequisites:** Node.js 18+, npm, a Supabase project, and a Google Gemini API key.
+
 ```bash
-[Run commands - e.g., npm start, python app.py]
+# Clone the repository
+git clone https://github.com/krishnapriyaaahh/renova.git
+cd renova/renova-project
 ```
 
-### For Hardware:
+**Backend setup:**
+```bash
+cd backend
+npm install
 
-#### Components Required
-[List all components needed with specifications]
+# Create .env file from example
+cp .env.example .env
+# Fill in your values:
+#   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
+#   JWT_SECRET, GEMINI_API_KEY, CLIENT_URL
+```
 
-#### Circuit Setup
-[Explain how to set up the circuit]
+**Frontend setup:**
+```bash
+cd renova
+npm install
+```
+
+**Database setup:**
+- Go to your Supabase project → SQL Editor
+- Run the contents of `backend/database/schema.sql`
+
+### Run Locally
+
+```bash
+# Terminal 1 — Start backend (port 5000)
+cd backend
+npm run dev
+
+# Terminal 2 — Start frontend (port 3000)
+cd renova
+npm start
+```
+
+Visit `http://localhost:3000` to use the app.
 
 ---
 
-## Project Documentation
-
-### For Software:
-
-#### Screenshots (Add at least 3)
-
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
-#### Diagrams
-
-**System Architecture:**
-
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
-
-**Application Workflow:**
-
-![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
-
----
-
-### For Hardware:
-
-#### Schematic & Circuit
-
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-#### Build Photos
-
-![Team](Add photo of your team here)
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
----
-
-## Additional Documentation
-
-### For Web Projects with Backend:
-
-#### API Documentation
-
-**Base URL:** `https://api.yourproject.com`
-
-##### Endpoints
-
-**GET /api/endpoint**
-- **Description:** [What it does]
-- **Parameters:**
-  - `param1` (string): [Description]
-  - `param2` (integer): [Description]
-- **Response:**
-```json
-{
-  "status": "success",
-  "data": {}
-}
-```
-
-**POST /api/endpoint**
-- **Description:** [What it does]
-- **Request Body:**
-```json
-{
-  "field1": "value1",
-  "field2": "value2"
-}
-```
-- **Response:**
-```json
-{
-  "status": "success",
-  "message": "Operation completed"
-}
-```
-
-[Add more endpoints as needed...]
-
----
-
-### For Mobile Apps:
-
-#### App Flow Diagram
-
-![App Flow](docs/app-flow.png)
-*Explain the user flow through your application*
-
-#### Installation Guide
-
-**For Android (APK):**
-1. Download the APK from [Release Link]
-2. Enable "Install from Unknown Sources" in your device settings:
-   - Go to Settings > Security
-   - Enable "Unknown Sources"
-3. Open the downloaded APK file
-4. Follow the installation prompts
-5. Open the app and enjoy!
-
-**For iOS (IPA) - TestFlight:**
-1. Download TestFlight from the App Store
-2. Open this TestFlight link: [Your TestFlight Link]
-3. Click "Install" or "Accept"
-4. Wait for the app to install
-5. Open the app from your home screen
-
-**Building from Source:**
-```bash
-# For Android
-flutter build apk
-# or
-./gradlew assembleDebug
-
-# For iOS
-flutter build ios
-# or
-xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
-```
-
----
-
-### For Hardware Projects:
-
-#### Bill of Materials (BOM)
-
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
-
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
-
----
-
-### For Scripts/CLI Tools:
-
-#### Command Reference
-
-**Basic Usage:**
-```bash
-python script.py [options] [arguments]
-```
-
-**Available Commands:**
-- `command1 [args]` - Description of what command1 does
-- `command2 [args]` - Description of what command2 does
-- `command3 [args]` - Description of what command3 does
-
-**Options:**
-- `-h, --help` - Show help message and exit
-- `-v, --verbose` - Enable verbose output
-- `-o, --output FILE` - Specify output file path
-- `-c, --config FILE` - Specify configuration file
-- `--version` - Show version information
-
-**Examples:**
-
-```bash
-# Example 1: Basic usage
-python script.py input.txt
-
-# Example 2: With verbose output
-python script.py -v input.txt
-
-# Example 3: Specify output file
-python script.py -o output.txt input.txt
-
-# Example 4: Using configuration
-python script.py -c config.json --verbose input.txt
-```
-
-#### Demo Output
-
-**Example 1: Basic Processing**
-
-**Input:**
-```
-This is a sample input file
-with multiple lines of text
-for demonstration purposes
-```
-
-**Command:**
-```bash
-python script.py sample.txt
-```
-
-**Output:**
-```
-Processing: sample.txt
-Lines processed: 3
-Characters counted: 86
-Status: Success
-Output saved to: output.txt
-```
-
-**Example 2: Advanced Usage**
-
-**Input:**
-```json
-{
-  "name": "test",
-  "value": 123
-}
-```
-
-**Command:**
-```bash
-python script.py -v --format json data.json
-```
-
-**Output:**
-```
-[VERBOSE] Loading configuration...
-[VERBOSE] Parsing JSON input...
-[VERBOSE] Processing data...
-{
-  "status": "success",
-  "processed": true,
-  "result": {
-    "name": "test",
-    "value": 123,
-    "timestamp": "2024-02-07T10:30:00"
-  }
-}
-[VERBOSE] Operation completed in 0.23s
-```
+## API Documentation
+
+**Base URL:** `https://renova-119i.vercel.app/api`
+
+### Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/signup` | Register a new user |
+| POST | `/api/auth/login` | Sign in with email & password |
+| POST | `/api/auth/logout` | Sign out (client-side) |
+| GET | `/api/auth/me` | Get current user from JWT token |
+
+### Onboarding
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/onboarding` | Save onboarding data |
+| GET | `/api/onboarding` | Get onboarding data |
+| PUT | `/api/onboarding` | Update onboarding data |
+
+### Profile
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/profile` | Get user profile |
+| PUT | `/api/profile` | Update profile fields |
+| POST | `/api/profile/resume` | Upload resume |
+| POST | `/api/profile/avatar` | Upload avatar image |
+| POST | `/api/profile/banner` | Upload banner image |
+| POST/PUT/DELETE | `/api/profile/{section}[/:id]` | Manage experience, education, certifications, achievements, volunteering, languages |
+
+### Dashboard
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/dashboard/metrics` | Get dashboard metrics |
+| PUT | `/api/dashboard/metrics` | Update metrics |
+| POST | `/api/dashboard/confidence` | Log confidence entry |
+| GET | `/api/dashboard/reminder` | Get daily motivational reminder |
+
+### Recommendations
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/recommendations` | Get personalized recommendations |
+| POST | `/api/recommendations/:id/save` | Save a recommendation |
+| DELETE | `/api/recommendations/:id/save` | Unsave a recommendation |
+| GET | `/api/recommendations/saved` | Get saved recommendations |
+
+### Roadmap
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/roadmap` | Get career roadmap milestones |
+| PATCH | `/api/roadmap/:id` | Toggle milestone completion |
+| POST | `/api/roadmap` | Add a new milestone |
+| PUT | `/api/roadmap/:id` | Update a milestone |
+| DELETE | `/api/roadmap/:id` | Delete a milestone |
+
+### Community
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/community/posts` | Get community feed |
+| POST | `/api/community/posts` | Create a new post |
+| POST | `/api/community/posts/:id/like` | Like/unlike a post |
+| GET | `/api/community/posts/:id/comments` | Get comments on a post |
+| POST | `/api/community/posts/:id/comments` | Add a comment |
+| DELETE | `/api/community/posts/:id` | Delete a post |
+
+### AI (Gemini)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/ai/chat` | AI career chat conversation |
+| POST | `/api/ai/break-explanation` | Generate career break explanation |
+| POST | `/api/ai/resume-review` | AI-powered resume review |
+| GET | `/api/ai/history` | Get chat history |
+| DELETE | `/api/ai/history` | Clear chat history |
 
 ---
 
 ## Project Demo
 
 ### Video
-[Add your demo video link here - YouTube, Google Drive, etc.]
+*Add demo video link here*
 
-*Explain what the video demonstrates - key features, user flow, technical highlights*
-
-### Additional Demos
-[Add any extra demo materials/links - Live site, APK download, online demo, etc.]
+### Live Demo
+- **Frontend:** [https://renova-frontend.vercel.app](https://renova-frontend.vercel.app)
+- **Backend Health Check:** [https://renova-119i.vercel.app/api/health](https://renova-119i.vercel.app/api/health)
 
 ---
 
-## AI Tools Used (Optional - For Transparency Bonus)
+## AI Tools Used
 
-If you used AI tools during development, document them here for transparency:
+**Tool Used:** GitHub Copilot (Claude)
 
-**Tool Used:** [e.g., GitHub Copilot, v0.dev, Cursor, ChatGPT, Claude]
-
-**Purpose:** [What you used it for]
-- Example: "Generated boilerplate React components"
-- Example: "Debugging assistance for async functions"
-- Example: "Code review and optimization suggestions"
-
-**Key Prompts Used:**
-- "Create a REST API endpoint for user authentication"
-- "Debug this async function that's causing race conditions"
-- "Optimize this database query for better performance"
-
-**Percentage of AI-generated code:** [Approximately X%]
+**Purpose:**
+- Backend and frontend scaffolding and debugging
+- Deployment configuration for Vercel
+- API integration and CORS troubleshooting
+- Code optimization and refactoring
 
 **Human Contributions:**
-- Architecture design and planning
-- Custom business logic implementation
-- Integration and testing
-- UI/UX design decisions
-
-*Note: Proper documentation of AI usage demonstrates transparency and earns bonus points in evaluation!*
+- Overall architecture design and planning
+- UI/UX design and styling decisions
+- Business logic for recommendation and roadmap engines
+- Database schema design
+- Testing and validation
 
 ---
 
 ## Team Contributions
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
+- **Ganga Gireesh:** Backend development, API design, database schema, AI integration (Gemini), deployment configuration
+- **Krishnapriya Rajeev:** Frontend development, UI/UX design, React components, styling, community features
 
 ---
 
 ## License
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
-
-**Common License Options:**
-- MIT License (Permissive, widely used)
-- Apache 2.0 (Permissive with patent grant)
-- GPL v3 (Copyleft, requires derivative works to be open source)
+This project is licensed under the MIT License.
 
 ---
 
