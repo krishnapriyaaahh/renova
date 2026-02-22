@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 
-const API = "http://localhost:5000/api";
+const API = process.env.REACT_APP_API_URL || "https://renova-119i.vercel.app/api";
 
 export const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);

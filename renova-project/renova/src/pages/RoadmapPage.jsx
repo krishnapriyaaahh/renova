@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import BackBtn from "../components/BackBtn";
 
-const API = "http://localhost:5000/api";
+const API = process.env.REACT_APP_API_URL || "https://renova-119i.vercel.app/api";
 
 export default function RoadmapPage({ navigate, logout, goBack }) {
   const { token } = useAuth();

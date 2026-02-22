@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Field } from "../components/AuthComponents";
 
-const API = "http://localhost:5000/api";
+const API = process.env.REACT_APP_API_URL || "https://renova-119i.vercel.app/api";
 
 export default function OnboardingPage({ onComplete }) {
   const { token } = useAuth();
