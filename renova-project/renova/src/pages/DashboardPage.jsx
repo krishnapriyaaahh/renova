@@ -16,7 +16,7 @@ export default function DashboardPage({ navigate, logout, goBack }) {
   });
   const [roadmap, setRoadmap] = useState([]);
   const [reminder, setReminder] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     if (!token) { setLoading(false); return; }

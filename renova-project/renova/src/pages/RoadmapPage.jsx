@@ -26,7 +26,8 @@ export default function RoadmapPage({ navigate, logout, goBack }) {
       .catch(() => setLoading(false));
   };
 
-  useEffect(() => { fetchRoadmap(); }, [token]);
+  useEffect(() => { fetchRoadmap(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const regenerateRoadmap = async () => {
     if (!token) return;

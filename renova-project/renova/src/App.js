@@ -30,7 +30,6 @@ function AppInner() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [history]);
 
-  const handleLogin = () => { setHistory([]); setPage("onboarding"); };
   const handleLogout = () => { logout(); setHistory([]); setPage("landing"); };
 
   // Redirect to dashboard if already authenticated on mount
